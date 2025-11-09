@@ -16,6 +16,9 @@ jobs:
     - name: Checkout code
       # This step checks out your repository's code so the workflow can access it.
       uses: actions/checkout@v4
+    
+    - name: Install Composer dependencies
+      run: composer install --no-dev --optimize-autoloader
 
     - name: FTP Deploy
       # This step uses a popular community action to sync files via FTP.
@@ -41,7 +44,6 @@ jobs:
           **/.git*
           **/.git*/**
           **/node_modules/**
-          **/vendor/**
           .github/**
           README.md
 
