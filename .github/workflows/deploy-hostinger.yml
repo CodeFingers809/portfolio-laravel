@@ -1,0 +1,53 @@
+# This is a GitHub Actions workflow file.
+# It automatically deploys your project to Hostinger via FTP
+# every time you push to your 'main' branch.
+
+name: Deploy to Hostinger FTP
+
+on:
+  push:
+    branches:
+      - main  # <-- Change this to 'master' if your default branch is 'master'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      # This step checks out your repository's code so the workflow can access it.
+      uses: actions/checkout@v4
+
+    - name: FTP Deploy
+      # This step uses a popular community action to sync files via FTP.
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        # These pull the 'secrets' you created in your GitHub repo settings.
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+
+        # **IMPORTANT!**
+        # We are using a "jailed" FTP account that is locked
+        # to our project's root folder (e.g., 'main_project').
+        # Because of this, the server directory we want to
+        # deploy to is simply '/', which represents the root
+        # of that jailed environment.
+        server-dir: /
+
+        # Exclude files and directories from the upload.
+        # We exclude Git files, GitHub Action files, and the vendor/node_modules
+        # folders (since they shouldn't be on Git anyway).
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/vendor/**
+          .github/**
+          README.md
+
+        # Set to true to delete files on the server that are
+        # no longer in your Git repository.
+        # Start with 'false'. Change to 'true' after your first
+        # successful deploy if you want to auto-delete old files.
+        # Be careful with this option.
+        dangerous-clean-slate: false
