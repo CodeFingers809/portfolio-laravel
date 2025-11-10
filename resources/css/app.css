@@ -6,6 +6,1240 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'VT323', monospace;
+    --font-pixel: 'Press Start 2P', monospace;
+    --color-terminal-green: #52525b;
+    --color-terminal-accent: #71717a;
+    --color-terminal-bg: #000000;
+    --color-terminal-border: #18181b;
+    --color-terminal-dark: #0a0a0a;
+}
+
+/* Time-based Theme System */
+:root {
+    /* Default Night Mode (21:00 - 05:59) */
+    --theme-bg-primary: #030303;
+    --theme-bg-secondary: #000000;
+    --theme-text-primary: #a1a1aa;
+    --theme-text-secondary: #71717a;
+    --theme-text-accent: #52525b;
+    --theme-border: rgba(82, 82, 91, 0.25);
+    --theme-glow: rgba(82, 82, 91, 0.12);
+}
+
+/* Morning Mode (06:00 - 11:59) - Bright blue-yellow-white morning sky */
+body.theme-morning {
+    --theme-bg-primary: #fff8e7;
+    --theme-bg-secondary: #fffbf0;
+    --theme-text-primary: #0c4a6e;
+    --theme-text-secondary: #075985;
+    --theme-text-accent: #0369a1;
+    --theme-border: rgba(12, 74, 110, 0.25);
+    --theme-glow: rgba(251, 191, 36, 0.3);
+}
+
+/* Afternoon/Day Mode (12:00 - 16:59) - High contrast light theme */
+body.theme-day {
+    --theme-bg-primary: #f5f5f5;
+    --theme-bg-secondary: #ffffff;
+    --theme-text-primary: #000000;
+    --theme-text-secondary: #1a1a1a;
+    --theme-text-accent: #333333;
+    --theme-border: rgba(0, 0, 0, 0.25);
+    --theme-glow: rgba(0, 0, 0, 0.15);
+}
+
+/* Sunset Mode (17:00 - 20:59) - Warm orangy-reddish-yellowish sunset */
+body.theme-sunset {
+    --theme-bg-primary: #1a0e08;
+    --theme-bg-secondary: #0f0805;
+    --theme-text-primary: #ffb366;
+    --theme-text-secondary: #ff8c42;
+    --theme-text-accent: #ff6b35;
+    --theme-border: rgba(255, 107, 53, 0.25);
+    --theme-glow: rgba(255, 179, 102, 0.2);
+}
+
+/* Night Mode (21:00 - 05:59) - Cool, darker tones (default) */
+body.theme-night {
+    --theme-bg-primary: #030303;
+    --theme-bg-secondary: #000000;
+    --theme-text-primary: #a1a1aa;
+    --theme-text-secondary: #71717a;
+    --theme-text-accent: #52525b;
+    --theme-border: rgba(82, 82, 91, 0.25);
+    --theme-glow: rgba(82, 82, 91, 0.12);
+}
+
+/* Custom Animations */
+@keyframes glitch {
+    0%, 100% {
+        transform: translate(0);
+    }
+    20% {
+        transform: translate(-2px, 2px);
+    }
+    40% {
+        transform: translate(-2px, -2px);
+    }
+    60% {
+        transform: translate(2px, 2px);
+    }
+    80% {
+        transform: translate(2px, -2px);
+    }
+}
+
+@keyframes terminal-blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+@keyframes scan-line {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+    }
+    41.99% {
+        opacity: 1;
+    }
+    42% {
+        opacity: 0.8;
+    }
+    43% {
+        opacity: 1;
+    }
+    45.99% {
+        opacity: 1;
+    }
+    46% {
+        opacity: 0.85;
+    }
+    46.5% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+@keyframes slide-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Terminal Effects */
+.terminal-text {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    color: var(--theme-text-primary);
+    text-shadow: 0 0 8px var(--theme-glow);
+}
+
+.terminal-glow {
+    box-shadow:
+        0 0 10px var(--theme-glow),
+        0 0 20px calc(var(--theme-glow) * 0.5),
+        inset 0 0 10px calc(var(--theme-glow) * 0.2);
+}
+
+.terminal-border {
+    border: 1px solid var(--theme-border);
+}
+
+.scan-line {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(transparent, var(--theme-glow), transparent);
+    animation: scan-line 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+    transition: background 0.8s ease;
+}
+
+.crt-effect {
+    animation: flicker 0.15s infinite;
+}
+
+.glitch-effect:hover {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+.terminal-cursor::after {
+    content: '▋';
+    animation: terminal-blink 1s step-end infinite;
+}
+
+/* Code Block Styling */
+pre {
+    @apply bg-black/50 border border-zinc-700/25 rounded p-4 overflow-x-auto;
+}
+
+code {
+    @apply font-mono text-zinc-400;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+    border-left: 1px solid rgba(82, 82, 91, 0.12);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(82, 82, 91, 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 113, 122, 0.4);
+}
+
+/* Selection */
+::selection {
+    background: rgba(82, 82, 91, 0.3);
+    color: #a1a1aa;
+}
+
+/* Pixelated Font Styles */
+body {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+    transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+.font-pixel {
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.6;
+}
+
+.text-pixel {
+    font-family: 'VT323', monospace;
+}
+
+/* Pixelated Globe */
+#pixel-globe {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes rotate-globe {
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+.globe-container {
+    perspective: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.globe-sphere {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate-globe 20s linear infinite;
+}
+
+.globe-ring {
+    position: absolute;
+    border: 2px solid var(--theme-border);
+    border-radius: 50%;
+    image-rendering: pixelated;
+    transition: border-color 0.8s ease;
+}
+
+.globe-meridian {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    border: 2px solid var(--theme-border);
+    border-radius: 50%;
+    transition: border-color 0.8s ease;
+}
+
+.globe-pixel {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--theme-text-secondary);
+    image-rendering: pixelated;
+    transition: background 0.8s ease;
+}
+
+/* SVG Icons Pixelation */
+svg {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    shape-rendering: crispEdges;
+}
+
+/* Intro Loader Animations */
+#intro-loader {
+    transition: opacity 0.5s ease-out;
+}
+
+#intro-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Blocky Loader */
+.blocky-loader {
+    display: flex;
+    gap: 12px;
+    height: 60px;
+    align-items: flex-end;
+}
+
+.blocky-loader .block {
+    width: 20px;
+    background: linear-gradient(180deg, rgba(113, 113, 122, 0.9), rgba(82, 82, 91, 0.6));
+    animation: block-bounce 1.2s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(82, 82, 91, 0.3);
+}
+
+.blocky-loader .block:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.blocky-loader .block:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.blocky-loader .block:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.blocky-loader .block:nth-child(4) {
+    animation-delay: 0.45s;
+}
+
+.blocky-loader .block:nth-child(5) {
+    animation-delay: 0.6s;
+}
+
+@keyframes block-bounce {
+    0%, 100% {
+        height: 20px;
+        opacity: 0.6;
+    }
+    50% {
+        height: 60px;
+        opacity: 1;
+    }
+}
+
+/* Percentage Display */
+.percentage-display {
+    text-shadow: 0 0 20px rgba(82, 82, 91, 0.5);
+    animation: pulse-glow 2s ease-in-out infinite;
+    font-family: 'Press Start 2P', monospace;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(82, 82, 91, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(113, 113, 122, 0.8);
+    }
+}
+
+/* Boot Messages */
+.boot-messages {
+    height: 200px;
+}
+
+.boot-line {
+    opacity: 0;
+    animation: boot-fade-in 0.3s ease-out forwards;
+    margin-bottom: 8px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-family: 'VT323', monospace;
+}
+
+.boot-line.success-line {
+    color: rgba(113, 113, 122, 0.9);
+    text-shadow: 0 0 10px rgba(82, 82, 91, 0.4);
+}
+
+@keyframes boot-fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Hero Radial Gradient - Layered Glow Effect with Theme Support */
+.hero-gradient {
+    position: absolute;
+    top: -15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 600px;
+    pointer-events: none;
+    z-index: 0;
+    transition: opacity 0.8s ease;
+}
+
+.hero-gradient::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 300px;
+    background: radial-gradient(
+        circle at center,
+        var(--theme-glow) 0%,
+        transparent 80%
+    );
+    opacity: 0.3;
+    filter: blur(40px);
+    animation: glow-pulse-small 4s ease-in-out infinite;
+    transition: background 0.8s ease;
+}
+
+.hero-gradient::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 450px;
+    background: radial-gradient(
+        ellipse at center,
+        var(--theme-glow) 0%,
+        transparent 70%
+    );
+    opacity: 0.2;
+    filter: blur(60px);
+    animation: glow-pulse-medium 6s ease-in-out infinite;
+    transition: background 0.8s ease;
+}
+
+@keyframes glow-pulse-small {
+    0%, 100% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+@keyframes glow-pulse-medium {
+    0%, 100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+#hero > .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Text Fill Animation - Scroll Triggered */
+.text-fill-animate {
+    background: linear-gradient(to right,
+        var(--theme-text-primary) 0%,
+        var(--theme-text-primary) var(--fill-percent, 0%),
+        var(--theme-text-accent) var(--fill-percent, 0%),
+        var(--theme-text-accent) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: --fill-percent 0.3s ease-out, background 0.8s ease;
+}
+
+@property --fill-percent {
+    syntax: '<percentage>';
+    inherits: false;
+    initial-value: 0%;
+}
+
+/* Theme-aware components - Apply to all text colors */
+.text-zinc-100,
+.text-zinc-200,
+.text-zinc-300,
+.text-white {
+    color: var(--theme-text-primary) !important;
+    transition: color 0.8s ease;
+}
+
+.text-zinc-400,
+.text-zinc-500 {
+    color: var(--theme-text-secondary) !important;
+    transition: color 0.8s ease;
+}
+
+.text-zinc-600,
+.text-zinc-700 {
+    color: var(--theme-text-accent) !important;
+    transition: color 0.8s ease;
+}
+
+/* Background colors */
+.bg-black,
+.bg-black\/80,
+.bg-black\/50,
+.bg-black\/30,
+.bg-zinc-700\/10,
+.bg-zinc-700\/12 {
+    background-color: var(--theme-bg-secondary) !important;
+    transition: background-color 0.8s ease;
+}
+
+/* Border colors */
+.border-zinc-700,
+.border-zinc-600,
+.border-zinc-700\/20,
+.border-zinc-700\/25,
+.border-zinc-700\/30,
+.border-zinc-700\/12 {
+    border-color: var(--theme-border) !important;
+    transition: border-color 0.8s ease;
+}
+
+/* Additional text color overrides for all text elements */
+span[class*="text-zinc"],
+div[class*="text-zinc"],
+p[class*="text-zinc"],
+a[class*="text-zinc"],
+h1[class*="text-zinc"],
+h2[class*="text-zinc"],
+h3[class*="text-zinc"],
+li[class*="text-zinc"] {
+    color: var(--theme-text-secondary) !important;
+    transition: color 0.8s ease;
+}
+
+/* Override specifically for lighter text variants */
+.text-zinc-300\/60,
+.text-zinc-300\/50,
+.text-zinc-400\/70,
+.text-zinc-400\/60 {
+    color: var(--theme-text-accent) !important;
+    opacity: 0.7;
+    transition: color 0.8s ease;
+}
+
+/* Progress bar backgrounds */
+.bg-zinc-500,
+.bg-zinc-600,
+.bg-zinc-700 {
+    background-color: var(--theme-text-secondary) !important;
+    transition: background-color 0.8s ease;
+}
+
+/* Hover states for links and buttons */
+.hover\:text-zinc-100:hover,
+.hover\:text-zinc-200:hover,
+.hover\:text-zinc-300:hover {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Group hover states */
+.group:hover .group-hover\:text-zinc-300,
+.group:hover .group-hover\:text-zinc-200,
+.group:hover .group-hover\:text-zinc-100 {
+    color: var(--theme-text-primary) !important;
+}
+
+.group\/item:hover .group-hover\/item\:text-zinc-200 {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Hover border colors */
+.hover\:border-zinc-600:hover,
+.hover\:border-zinc-700:hover {
+    border-color: var(--theme-text-primary) !important;
+}
+
+/* Hover background colors */
+.hover\:bg-zinc-700\/10:hover,
+.hover\:bg-zinc-700\/12:hover,
+.hover\:bg-zinc-700\/8:hover,
+.hover\:bg-black\/40:hover,
+.hover\:bg-black\/50:hover,
+.hover\:bg-black\/70:hover {
+    background-color: var(--theme-bg-secondary) !important;
+    opacity: 0.5;
+}
+
+/* Card and container backgrounds - Fixed for light themes */
+.bg-black\/30 {
+    background-color: var(--theme-bg-secondary) !important;
+}
+
+/* Light theme specific adjustments */
+body.theme-morning .bg-black\/30,
+body.theme-day .bg-black\/30 {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-morning .bg-black\/50,
+body.theme-day .bg-black\/50 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid var(--theme-border);
+}
+
+/* Specific overrides for code blocks and terminal windows */
+code,
+pre,
+.font-mono {
+    color: var(--theme-text-secondary) !important;
+    transition: color 0.8s ease;
+}
+
+/* Percentage display and boot messages */
+.percentage-display,
+.boot-line {
+    color: var(--theme-text-primary) !important;
+    transition: color 0.8s ease;
+}
+
+.boot-line.success-line {
+    color: var(--theme-text-secondary) !important;
+}
+
+/* Theme Toggle Button Styles */
+#theme-toggle {
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#theme-toggle:active {
+    transform: scale(0.95);
+}
+
+#theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--theme-glow) 0%, transparent 70%);
+    pointer-events: none;
+    transition: transform 0.3s ease;
+}
+
+#theme-toggle:active::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Theme notification toast */
+.theme-toast {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: var(--theme-bg-secondary);
+    border: 1px solid var(--theme-border);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: var(--theme-text-primary);
+    box-shadow: 0 0 20px var(--theme-glow);
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.theme-toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+/* Scroll-triggered Animations */
+@keyframes boot-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes flicker-in {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 0;
+    }
+    10.1% {
+        opacity: 1;
+    }
+    10.2% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 0;
+    }
+    20.1% {
+        opacity: 1;
+    }
+    20.6% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 0;
+    }
+    30.1% {
+        opacity: 1;
+    }
+    30.5% {
+        opacity: 1;
+    }
+    30.6% {
+        opacity: 0;
+    }
+    45% {
+        opacity: 0;
+    }
+    45.1% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    55% {
+        opacity: 1;
+    }
+    55.1% {
+        opacity: 0;
+    }
+    57% {
+        opacity: 0;
+    }
+    57.1% {
+        opacity: 1;
+    }
+    60% {
+        opacity: 1;
+    }
+    60.1% {
+        opacity: 0;
+    }
+    65% {
+        opacity: 0;
+    }
+    65.1% {
+        opacity: 1;
+    }
+    75% {
+        opacity: 1;
+    }
+    75.1% {
+        opacity: 0;
+    }
+    77% {
+        opacity: 0;
+    }
+    77.1% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    85.1% {
+        opacity: 0;
+    }
+    86% {
+        opacity: 0;
+    }
+    86.1% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fall-into-place {
+    from {
+        opacity: 0;
+        transform: translateY(-50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes card-slide-left {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes card-slide-right {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation Classes */
+.scroll-animate {
+    opacity: 0;
+}
+
+.scroll-animate.boot-slide {
+    animation: boot-slide-in 0.8s ease-out forwards;
+}
+
+.scroll-animate.flicker {
+    animation: flicker-in 1.2s ease-out forwards;
+}
+
+.scroll-animate.fall {
+    animation: fall-into-place 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.scroll-animate.slide-left {
+    animation: card-slide-left 0.8s ease-out forwards;
+}
+
+.scroll-animate.slide-right {
+    animation: card-slide-right 0.8s ease-out forwards;
+}
+
+/* Vertical Scroll Progress Bar */
+#scroll-progress-container {
+    background: linear-gradient(to bottom,
+        var(--theme-border) 0%,
+        var(--theme-border) 100%
+    );
+    box-shadow: 0 0 10px var(--theme-glow);
+    transition: background 0.8s ease;
+}
+
+#scroll-progress-bar {
+    background: linear-gradient(to bottom,
+        var(--theme-text-primary) 0%,
+        var(--theme-text-secondary) 100%
+    ) !important;
+    box-shadow:
+        0 0 10px var(--theme-glow),
+        0 0 20px var(--theme-glow),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+    transition: height 0.1s ease-out, background 0.8s ease, box-shadow 0.8s ease;
+}
+
+/* Light theme adjustments for scroll progress */
+body.theme-morning #scroll-progress-bar,
+body.theme-day #scroll-progress-bar {
+    box-shadow:
+        0 0 15px var(--theme-glow),
+        0 0 30px var(--theme-glow),
+        inset 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Sunset theme adjustments */
+body.theme-sunset #scroll-progress-bar {
+    box-shadow:
+        0 0 15px rgba(255, 107, 53, 0.5),
+        0 0 30px rgba(255, 179, 102, 0.3),
+        inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+/* =================================================================
+   UNIVERSAL 4-CORNER BRACKET HOVER - Applied everywhere
+   ALL 4 CORNERS light up on hover with scale animation from center
+   Uses overlay approach so rounded corners don't cut it off
+   ================================================================= */
+
+.terminal-border,
+.award-card,
+.skill-card,
+#certifications a,
+#about a,
+#hero a,
+#experience .terminal-border,
+#projects .terminal-border,
+#projects a.github-btn {
+    position: relative;
+    overflow: visible !important;
+}
+
+/* Overlay wrapper for 4 corners - scales from center */
+.terminal-border::after,
+.award-card::after,
+.skill-card::after,
+#certifications a::after,
+#about a::after,
+#hero a::after,
+#experience .terminal-border::after,
+#projects .terminal-border::after,
+#projects a.github-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background-image:
+        /* Top-left corner */
+        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Top-right corner */
+        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Bottom-left corner */
+        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Bottom-right corner */
+        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary));
+    background-size:
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px;
+    background-position:
+        top left,
+        top left,
+        top right,
+        top right,
+        bottom left,
+        bottom left,
+        bottom right,
+        bottom right;
+    background-repeat: no-repeat;
+}
+
+/* Activate on hover - scale to full size */
+.terminal-border:hover::after,
+.award-card:hover::after,
+.skill-card:hover::after,
+#certifications a:hover::after,
+#about a:hover::after,
+#hero a:hover::after,
+#experience .group:hover .terminal-border::after,
+#projects .terminal-border:hover::after,
+#projects .group:hover .terminal-border::after,
+#projects a.github-btn:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Navbar - underline effect instead of corners */
+nav a {
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--theme-text-primary);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* Radial Progress Circle */
+.radial-progress {
+    position: relative;
+    width: 200px;
+    height: 200px;
+}
+
+.radial-progress-circle {
+    transform: rotate(-90deg);
+    transform-origin: center;
+}
+
+.radial-progress-bg {
+    fill: none;
+    stroke: var(--theme-border);
+    stroke-width: 8;
+}
+
+.radial-progress-fill {
+    fill: none;
+    stroke: var(--theme-text-primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 565.48;
+    stroke-dashoffset: 565.48;
+    transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1),
+                stroke 0.8s ease;
+    animation: fillProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fillProgress {
+    from {
+        stroke-dashoffset: 565.48;
+    }
+}
+
+.radial-progress-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.skill-card {
+    position: relative;
+}
+
+/* Radial progress animation on scroll */
+.radial-progress-fill[data-animated="true"] {
+    animation: fillProgress 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* =================================================================
+   REMOVE ALL HOVER EFFECTS EXCEPT 4-CORNER BRACKETS
+   ================================================================= */
+
+/* Remove ALL scale/translate transforms */
+.hover\:scale-105:hover,
+.hover\:scale-110:hover,
+.hover\:scale-\[1\.02\]:hover,
+.group-hover\:scale-110,
+.group-hover\:scale-125,
+.group-hover\:scale-150,
+.hover\:translate-x-1:hover,
+.group-hover\/link\:translate-x-1 {
+    transform: none !important;
+}
+
+/* Remove ALL border hover effects */
+.hover\:border-zinc-600:hover,
+.hover\:border-zinc-700:hover {
+    border-color: inherit !important;
+}
+
+/* Remove ALL background hover effects */
+.hover\:bg-zinc-700\/10:hover,
+.hover\:bg-zinc-700\/12:hover,
+.hover\:bg-zinc-700\/8:hover,
+.hover\:bg-black\/40:hover,
+.hover\:bg-black\/50:hover,
+.hover\:bg-black\/70:hover {
+    background-color: transparent !important;
+}
+
+/* Remove terminal-glow effects on hover */
+.terminal-glow {
+    box-shadow: none !important;
+}
+
+/* Hero section - remove ALL hover effects */
+#hero a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+/* About section - remove ALL hover effects */
+#about a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+#about .terminal-border:hover {
+    background: transparent !important;
+}
+
+/* Experience section - remove ALL hover effects including lift/scale */
+#experience .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#experience .group:hover .terminal-border {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#experience .group:hover .bg-zinc-500 {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#experience .group:hover h3,
+#experience .group:hover .text-white {
+    color: inherit !important;
+}
+
+#experience .group:hover .border-l-2 {
+    border-color: inherit !important;
+}
+
+/* Skills section - remove ALL hover effects except text fill animation */
+#skills .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#skills .group:hover h3,
+#skills .group:hover .text-white {
+    color: inherit !important;
+}
+
+/* Add text fill animation to skills section text */
+#skills h3,
+#skills p {
+    background: linear-gradient(to right,
+        var(--theme-text-primary) 0%,
+        var(--theme-text-primary) var(--fill-percent, 0%),
+        var(--theme-text-accent) var(--fill-percent, 0%),
+        var(--theme-text-accent) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: --fill-percent 0.3s ease-out, background 0.8s ease;
+}
+
+/* Projects section - remove ALL hover effects */
+#projects .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#projects .group:hover .terminal-border {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#projects .group:hover h3,
+#projects .group:hover .text-white {
+    color: inherit !important;
+}
+
+#projects a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+/* Certifications section - remove ALL hover effects */
+#certifications a:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#certifications .group:hover h3,
+#certifications .group:hover .text-white {
+    color: inherit !important;
+}
+
+/* Contact section - remove ALL hover effects */
+#contact .border:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+}
+
+#contact a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
 }
