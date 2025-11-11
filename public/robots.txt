@@ -1,2 +1,12 @@
+# robots.txt for Ayush Bohra Portfolio
+
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://ayushbohra.com/sitemap.xml
+
+# Crawl-delay for bots
+Crawl-delay: 1

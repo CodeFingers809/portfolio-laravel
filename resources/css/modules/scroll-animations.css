@@ -1,0 +1,26 @@
+/* Scroll-triggered Animations */
+
+/* Animation Classes */
+.scroll-animate {
+    opacity: 0;
+}
+
+.scroll-animate.boot-slide {
+    animation: boot-slide-in 0.8s ease-out forwards;
+}
+
+.scroll-animate.flicker {
+    animation: flicker-in 1.2s ease-out forwards;
+}
+
+.scroll-animate.fall {
+    animation: fall-into-place 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.scroll-animate.slide-left {
+    animation: card-slide-left 0.8s ease-out forwards;
+}
+
+.scroll-animate.slide-right {
+    animation: card-slide-right 0.8s ease-out forwards;
+}

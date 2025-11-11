@@ -1,0 +1,19 @@
+/* Press Start 2P Font */
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/press-start-2p.woff2') format('woff2'),
+       url('/fonts/press-start-2p.ttf') format('truetype');
+}
+
+/* VT323 Font */
+@font-face {
+  font-family: 'VT323';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url('/fonts/vt323.woff2') format('woff2'),
+       url('/fonts/vt323.ttf') format('truetype');
+}

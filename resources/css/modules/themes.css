@@ -1,0 +1,74 @@
+/* Time-based Theme System */
+:root {
+    /* Default Night Mode (21:00 - 05:59) */
+    --theme-bg-primary: #030303;
+    --theme-bg-secondary: #000000;
+    --theme-text-primary: #a1a1aa;
+    --theme-text-secondary: #71717a;
+    --theme-text-accent: #52525b;
+    --theme-border: rgba(82, 82, 91, 0.25);
+    --theme-glow: rgba(82, 82, 91, 0.12);
+}
+
+/* Morning Mode (06:00 - 11:59) - Warm morning sun background */
+body.theme-morning {
+    --theme-bg-primary: #fff8e7;
+    --theme-bg-secondary: #fffbf0;
+    --theme-text-primary: #0c4a6e;
+    --theme-text-secondary: #075985;
+    --theme-text-accent: #0284c7;
+    --theme-border: rgba(12, 74, 110, 0.3);
+    --theme-glow: rgba(251, 191, 36, 0.4);
+}
+
+/* Afternoon/Day Mode (12:00 - 16:59) - Clean blue high contrast */
+body.theme-day {
+    --theme-bg-primary: #fffef5;
+    --theme-bg-secondary: #ffffff;
+    --theme-text-primary: #1e3a8a;
+    --theme-text-secondary: #1e40af;
+    --theme-text-accent: #3b82f6;
+    --theme-border: rgba(30, 58, 138, 0.3);
+    --theme-glow: rgba(59, 130, 246, 0.4);
+}
+
+/* Sunset Mode (17:00 - 20:59) - Warm orangy-reddish-yellowish sunset */
+body.theme-sunset {
+    --theme-bg-primary: #1a0e08;
+    --theme-bg-secondary: #0f0805;
+    --theme-text-primary: #ffb366;
+    --theme-text-secondary: #ff8c42;
+    --theme-text-accent: #ff6b35;
+    --theme-border: rgba(255, 107, 53, 0.25);
+    --theme-glow: rgba(255, 179, 102, 0.2);
+}
+
+/* Night Mode (21:00 - 05:59) - Cool, darker tones (default) */
+body.theme-night {
+    --theme-bg-primary: #030303;
+    --theme-bg-secondary: #000000;
+    --theme-text-primary: #a1a1aa;
+    --theme-text-secondary: #71717a;
+    --theme-text-accent: #52525b;
+    --theme-border: rgba(82, 82, 91, 0.25);
+    --theme-glow: rgba(82, 82, 91, 0.12);
+}
+
+/* Disable transitions on initial load */
+:root[style*="--initial-load"] * {
+    transition: none !important;
+}
+
+/* Global transitions for theme changes */
+*,
+*::before,
+*::after {
+    transition: background-color 0.6s ease, color 0.6s ease, border-color 0.6s ease, fill 0.6s ease, stroke 0.6s ease, box-shadow 0.6s ease, text-shadow 0.6s ease, background 0.6s ease !important;
+}
+
+/* Theme Toggle Button Styles */
+#theme-toggle {
+    position: relative;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}

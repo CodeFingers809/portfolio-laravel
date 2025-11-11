@@ -1,0 +1,253 @@
+/* =================================================================
+   UNIVERSAL 4-CORNER BRACKET HOVER - Applied everywhere
+   ALL 4 CORNERS light up on hover with scale animation from center
+   Uses overlay approach so rounded corners don't cut it off
+   ================================================================= */
+
+.terminal-border,
+.award-card,
+.skill-card,
+#certifications a,
+#about a,
+#hero a,
+#experience .terminal-border,
+#projects .terminal-border,
+#projects a.github-btn {
+    position: relative;
+    overflow: visible !important;
+}
+
+/* Overlay wrapper for 4 corners - scales from center */
+.terminal-border::after,
+.award-card::after,
+.skill-card::after,
+#certifications a::after,
+#about a::after,
+#hero a::after,
+#experience .terminal-border::after,
+#projects .terminal-border::after,
+#projects a.github-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transform: scale(0.8);
+    background-image:
+        /* Top-left corner */
+        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Top-right corner */
+        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Bottom-left corner */
+        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary)),
+        /* Bottom-right corner */
+        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
+        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary));
+    background-size:
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px,
+        12px 2px,
+        2px 12px;
+    background-position:
+        top left,
+        top left,
+        top right,
+        top right,
+        bottom left,
+        bottom left,
+        bottom right,
+        bottom right;
+    background-repeat: no-repeat;
+}
+
+/* Activate on hover - scale to full size */
+.terminal-border:hover::after,
+.award-card:hover::after,
+.skill-card:hover::after,
+#certifications a:hover::after,
+#about a:hover::after,
+#hero a:hover::after,
+#experience .group:hover .terminal-border::after,
+#projects .terminal-border:hover::after,
+#projects .group:hover .terminal-border::after,
+#projects a.github-btn:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Navbar - underline effect instead of corners */
+nav a {
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--theme-text-primary);
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* =================================================================
+   REMOVE ALL HOVER EFFECTS EXCEPT 4-CORNER BRACKETS
+   ================================================================= */
+
+/* Remove ALL scale/translate transforms */
+.hover\:scale-105:hover,
+.hover\:scale-110:hover,
+.hover\:scale-\[1\.02\]:hover,
+.group-hover\:scale-110,
+.group-hover\:scale-125,
+.group-hover\:scale-150,
+.hover\:translate-x-1:hover,
+.group-hover\/link\:translate-x-1 {
+    transform: none !important;
+}
+
+/* Remove ALL border hover effects */
+.hover\:border-zinc-600:hover,
+.hover\:border-zinc-700:hover {
+    border-color: inherit !important;
+}
+
+/* Remove ALL background hover effects */
+.hover\:bg-zinc-700\/10:hover,
+.hover\:bg-zinc-700\/12:hover,
+.hover\:bg-zinc-700\/8:hover,
+.hover\:bg-black\/40:hover,
+.hover\:bg-black\/50:hover,
+.hover\:bg-black\/70:hover {
+    background-color: transparent !important;
+}
+
+/* Remove terminal-glow effects on hover */
+.terminal-glow {
+    box-shadow: none !important;
+}
+
+/* Hero section - remove ALL hover effects */
+#hero a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+/* About section - remove ALL hover effects */
+#about a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+#about .terminal-border:hover {
+    background: transparent !important;
+}
+
+/* Experience section - remove ALL hover effects including lift/scale */
+#experience .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#experience .group:hover .terminal-border {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#experience .group:hover .bg-zinc-500 {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+#experience .group:hover h3,
+#experience .group:hover .text-white {
+    color: inherit !important;
+}
+
+#experience .group:hover .border-l-2 {
+    border-color: inherit !important;
+}
+
+/* Skills section - remove ALL hover effects except text fill animation */
+#skills .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#skills .group:hover h3,
+#skills .group:hover .text-white {
+    color: inherit !important;
+}
+
+/* Add text fill animation to skills section text */
+#skills h3,
+#skills p {
+    background: linear-gradient(to right,
+        var(--theme-text-primary) 0%,
+        var(--theme-text-primary) var(--fill-percent, 0%),
+        var(--theme-text-accent) var(--fill-percent, 0%),
+        var(--theme-text-accent) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    transition: --fill-percent 0.3s ease-out, background 0.4s ease;
+}
+
+/* Projects section - remove ALL hover effects */
+#projects .terminal-border:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#projects .group:hover .terminal-border {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#projects .group:hover h3,
+#projects .group:hover .text-white {
+    color: inherit !important;
+}
+
+#projects a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}
+
+/* Certifications section - remove ALL hover effects */
+#certifications a:hover {
+    transform: none !important;
+    background: transparent !important;
+}
+
+#certifications .group:hover h3,
+#certifications .group:hover .text-white {
+    color: inherit !important;
+}
+
+/* Contact section - remove ALL hover effects */
+#contact .border:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+}
+
+#contact a:hover {
+    background: transparent !important;
+    border-color: inherit !important;
+    transform: none !important;
+}

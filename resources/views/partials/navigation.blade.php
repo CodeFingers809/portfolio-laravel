@@ -11,9 +11,9 @@
                 <a href="{{ route('home') }}" class="text-base sm:text-lg lg:text-xl font-bold terminal-text glitch-trigger whitespace-nowrap flex-shrink-0">
                     <span class="text-zinc-300">ayush@portfolio</span><span class="text-white">:~$</span><span class="terminal-cursor"></span>
                 </a>
-                <button id="theme-toggle" class="flex items-center gap-1 sm:gap-2 hover:scale-105 transition-transform duration-200 cursor-pointer group" title="Click to change theme">
+                <button id="theme-toggle" class="flex items-center gap-1 sm:gap-2 cursor-pointer" title="Click to change theme">
                     <span id="theme-icon" class="text-lg sm:text-xl"></span>
-                    <span id="theme-name" class="text-xs sm:text-sm font-mono text-zinc-400 hidden sm:inline-block group-hover:text-zinc-300 transition-colors">[<span id="theme-name-text"></span>]</span>
+                    <span id="theme-name" class="text-xs sm:text-sm font-mono text-zinc-400 hidden sm:inline-block">[<span id="theme-name-text"></span>]</span>
                 </button>
             </div>
 

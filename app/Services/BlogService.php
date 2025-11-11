@@ -2,12 +2,11 @@
 
 namespace App\Services;
 
-use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
+use League\CommonMark\Extension\Attributes\AttributesExtension;
 use League\CommonMark\MarkdownConverter;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Yaml\Yaml;
 
@@ -26,6 +25,7 @@ class BlogService
 
         $environment->addExtension(new CommonMarkCoreExtension());
         $environment->addExtension(new GithubFlavoredMarkdownExtension());
+        $environment->addExtension(new AttributesExtension());
 
         $this->converter = new MarkdownConverter($environment);
         $this->blogsPath = storage_path('app/blogs');
@@ -81,6 +81,9 @@ class BlogService
         // Convert markdown to HTML
         $html = $this->converter->convert($parsed['content'])->getContent();
 
+        // Process image paths to use the blog.asset route
+        $html = $this->processImagePaths($html, $slug);
+
         return [
             'slug' => $slug,
             'title' => $parsed['frontMatter']['title'] ?? 'Untitled',
@@ -92,6 +95,35 @@ class BlogService
             'raw_content' => $parsed['content'],
             'front_matter' => $parsed['frontMatter'],
         ];
+    }
+
+    /**
+     * Process image paths in HTML to use the blog.asset route
+     */
+    private function processImagePaths(string $html, string $slug): string
+    {
+        // Replace image src attributes that start with "images/" or "downloads/"
+        $html = preg_replace_callback(
+            '/<img([^>]*)\ssrc="(images|downloads)\/([^"]+)"([^>]*)>/i',
+            function ($matches) use ($slug) {
+                $type = $matches[2];
+                $filename = $matches[3];
+                $url = route('blog.asset', [
+                    'slug' => $slug,
+                    'type' => $type,
+                    'filename' => $filename
+                ]);
+
+                // Check if loading attribute already exists
+                $hasLoading = stripos($matches[1] . $matches[4], 'loading=') !== false;
+                $loadingAttr = $hasLoading ? '' : ' loading="lazy"';
+
+                return '<img' . $matches[1] . ' src="' . $url . '"' . $matches[4] . $loadingAttr . '>';
+            },
+            $html
+        );
+
+        return $html;
     }
 
     /**

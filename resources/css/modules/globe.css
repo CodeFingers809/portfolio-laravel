@@ -1,0 +1,48 @@
+/* Pixelated Globe */
+#pixel-globe {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+}
+
+.globe-container {
+    perspective: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.globe-sphere {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: rotate-globe 20s linear infinite;
+}
+
+.globe-ring {
+    position: absolute;
+    border: 2px solid var(--theme-border);
+    border-radius: 50%;
+    image-rendering: pixelated;
+}
+
+.globe-meridian {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-left: -100px;
+    border: 2px solid var(--theme-border);
+    border-radius: 50%;
+}
+
+.globe-pixel {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--theme-text-secondary);
+    image-rendering: pixelated;
+}

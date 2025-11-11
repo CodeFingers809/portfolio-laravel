@@ -1,0 +1,42 @@
+/* Terminal Effects */
+.terminal-text {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    color: var(--theme-text-primary);
+    text-shadow: 0 0 8px var(--theme-glow);
+}
+
+.terminal-glow {
+    box-shadow:
+        0 0 10px var(--theme-glow),
+        0 0 20px calc(var(--theme-glow) * 0.5),
+        inset 0 0 10px calc(var(--theme-glow) * 0.2);
+}
+
+.terminal-border {
+    border: 1px solid var(--theme-border);
+}
+
+.scan-line {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(transparent, var(--theme-glow), transparent);
+    animation: scan-line 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+}
+
+.crt-effect {
+    animation: flicker 0.15s infinite;
+}
+
+.glitch-effect:hover {
+    animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+}
+
+.terminal-cursor::after {
+    content: '▋';
+    animation: terminal-blink 1s step-end infinite;
+}

@@ -1,5 +1,31 @@
 @extends('layouts.app')
 
+@php
+    $title = 'Blog - Ayush Bohra';
+    $description = 'Read about AI, Machine Learning, Deep Learning, LLMs, and software engineering. Technical insights and tutorials by Ayush Bohra.';
+    $keywords = 'Ayush Bohra, Tech Blog, AI Blog, Machine Learning, Deep Learning, LLM, Software Engineering, Tutorials';
+    $ogTitle = 'Blog - Ayush Bohra';
+    $ogDescription = 'Technical insights and tutorials on AI, Machine Learning, and Software Engineering';
+    $canonical = route('blog.index');
+@endphp
+
+@push('structured-data')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "Blog",
+    "name": "Ayush Bohra's Tech Blog",
+    "description": "Technical insights and tutorials on AI, Machine Learning, Deep Learning, and Software Engineering",
+    "url": "{{ route('blog.index') }}",
+    "author": {
+        "@@type": "Person",
+        "name": "Ayush Bohra",
+        "jobTitle": "Software Engineer & AI Researcher"
+    }
+}
+</script>
+@endpush
+
 @section('content')
 <div class="min-h-screen pt-24 px-6 pb-20">
     <div class="container mx-auto max-w-6xl">
@@ -59,11 +85,8 @@
 
                             <!-- Read More Link -->
                             <a href="{{ route('blog.show', $blog['slug']) }}"
-                               class="inline-flex items-center text-zinc-300 hover:text-zinc-100 transition-colors group-hover:translate-x-1 transition-transform">
-                                <span>> Read More</span>
-                                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                </svg>
+                               class="inline-flex items-center text-zinc-300 hover:text-zinc-100 transition-all group-hover:translate-x-1">
+                                <span>Read More ></span>
                             </a>
                         </div>
                     </article>

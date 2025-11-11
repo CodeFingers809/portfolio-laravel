@@ -1,0 +1,135 @@
+/* Theme-aware components - Apply to all text colors */
+.text-zinc-100,
+.text-zinc-200,
+.text-zinc-300,
+.text-white {
+    color: var(--theme-text-primary) !important;
+}
+
+.text-zinc-400,
+.text-zinc-500 {
+    color: var(--theme-text-secondary) !important;
+}
+
+.text-zinc-600,
+.text-zinc-700 {
+    color: var(--theme-text-accent) !important;
+}
+
+/* Background colors */
+.bg-black,
+.bg-black\/80,
+.bg-black\/50,
+.bg-black\/30,
+.bg-zinc-700\/10,
+.bg-zinc-700\/12 {
+    background-color: var(--theme-bg-secondary) !important;
+}
+
+/* Border colors */
+.border-zinc-700,
+.border-zinc-600,
+.border-zinc-700\/20,
+.border-zinc-700\/25,
+.border-zinc-700\/30,
+.border-zinc-700\/12 {
+    border-color: var(--theme-border) !important;
+}
+
+/* Additional text color overrides for all text elements */
+span[class*="text-zinc"],
+div[class*="text-zinc"],
+p[class*="text-zinc"],
+a[class*="text-zinc"],
+h1[class*="text-zinc"],
+h2[class*="text-zinc"],
+h3[class*="text-zinc"],
+li[class*="text-zinc"] {
+    color: var(--theme-text-secondary) !important;
+}
+
+/* Override specifically for lighter text variants */
+.text-zinc-300\/60,
+.text-zinc-300\/50,
+.text-zinc-400\/70,
+.text-zinc-400\/60 {
+    color: var(--theme-text-accent) !important;
+    opacity: 0.7;
+}
+
+/* Progress bar backgrounds */
+.bg-zinc-500,
+.bg-zinc-600,
+.bg-zinc-700 {
+    background-color: var(--theme-text-secondary) !important;
+}
+
+/* Hover states for links and buttons */
+.hover\:text-zinc-100:hover,
+.hover\:text-zinc-200:hover,
+.hover\:text-zinc-300:hover {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Group hover states */
+.group:hover .group-hover\:text-zinc-300,
+.group:hover .group-hover\:text-zinc-200,
+.group:hover .group-hover\:text-zinc-100 {
+    color: var(--theme-text-primary) !important;
+}
+
+.group\/item:hover .group-hover\/item\:text-zinc-200 {
+    color: var(--theme-text-primary) !important;
+}
+
+/* Hover border colors */
+.hover\:border-zinc-600:hover,
+.hover\:border-zinc-700:hover {
+    border-color: var(--theme-text-primary) !important;
+}
+
+/* Hover background colors */
+.hover\:bg-zinc-700\/10:hover,
+.hover\:bg-zinc-700\/12:hover,
+.hover\:bg-zinc-700\/8:hover,
+.hover\:bg-black\/40:hover,
+.hover\:bg-black\/50:hover,
+.hover\:bg-black\/70:hover {
+    background-color: var(--theme-bg-secondary) !important;
+    opacity: 0.5;
+}
+
+/* Card and container backgrounds - Fixed for light themes */
+.bg-black\/30 {
+    background-color: var(--theme-bg-secondary) !important;
+}
+
+/* Light theme specific adjustments */
+body.theme-morning .bg-black\/30,
+body.theme-day .bg-black\/30 {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    border: 1px solid var(--theme-border);
+}
+
+body.theme-morning .bg-black\/50,
+body.theme-day .bg-black\/50 {
+    background-color: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid var(--theme-border);
+}
+
+/* Specific overrides for code blocks and terminal windows */
+code,
+pre,
+.font-mono {
+    color: var(--theme-text-secondary) !important;
+}
+
+/* Percentage display and boot messages */
+.percentage-display,
+.boot-line {
+    color: var(--theme-text-primary) !important;
+}
+
+.boot-line.success-line {
+    color: var(--theme-text-secondary) !important;
+}

@@ -1,5 +1,29 @@
 import './bootstrap';
 
+// Performance utilities
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
+const throttle = (func, limit) => {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+};
+
 // Terminal typing effect
 class TerminalTyper {
     constructor(element, text, speed = 50) {
@@ -140,49 +164,6 @@ class ThemeManager {
     cycleTheme() {
         const nextTheme = this.getNextTheme();
         this.applyTheme(nextTheme, true);
-        this.showToast(nextTheme);
-    }
-
-    showToast(theme) {
-        // Remove existing toast if any
-        const existingToast = document.querySelector('.theme-toast');
-        if (existingToast) {
-            existingToast.remove();
-        }
-
-        // Create new toast
-        const toast = document.createElement('div');
-        toast.className = 'theme-toast';
-
-        const themeNames = {
-            morning: 'Morning Mode',
-            day: 'Day Mode',
-            sunset: 'Sunset Mode',
-            night: 'Night Mode'
-        };
-
-        const themeIcons = {
-            morning: '☀️',
-            day: '🌤️',
-            sunset: '🌅',
-            night: '🌙'
-        };
-
-        toast.textContent = `${themeIcons[theme]} ${themeNames[theme]} - Saved for today`;
-        document.body.appendChild(toast);
-
-        // Show toast
-        setTimeout(() => {
-            toast.classList.add('show');
-        }, 10);
-
-        // Hide and remove toast after 2 seconds
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => {
-                toast.remove();
-            }, 300);
-        }, 2000);
     }
 
     init() {
@@ -309,7 +290,7 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(element);
     });
 
-    // Parallax effect for hero section
+    // Parallax effect for hero section (throttled for performance)
     const handleParallax = () => {
         const scrolled = window.pageYOffset;
         const parallaxElements = document.querySelectorAll('[data-parallax]');
@@ -320,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    window.addEventListener('scroll', handleParallax);
+    window.addEventListener('scroll', throttle(handleParallax, 16), { passive: true });
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -385,12 +366,12 @@ document.addEventListener('DOMContentLoaded', () => {
         scrollAnimateObserver.observe(element);
     });
 
-    // Matrix rain effect (optional, for background)
+    // Matrix rain effect (optional, for background) - lazy init for performance
     const createMatrixRain = () => {
         const canvas = document.getElementById('matrix-canvas');
         if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: false });
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
@@ -406,12 +387,12 @@ document.addEventListener('DOMContentLoaded', () => {
         function draw() {
             // Get theme colors from CSS variables
             const bgColor = getComputedStyle(document.body).getPropertyValue('--theme-bg-primary');
-            const textColor = getComputedStyle(document.body).getPropertyValue('--theme-text-accent');
+            const textColor = getComputedStyle(document.body).getPropertyValue('--theme-text-primary');
 
             ctx.fillStyle = bgColor + '0D'; // 5% opacity
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            ctx.fillStyle = textColor + '66'; // 40% opacity
+            ctx.fillStyle = textColor + 'CC'; // 80% opacity for brighter characters
             ctx.font = fontSize + 'px monospace';
 
             for (let i = 0; i < drops.length; i++) {
@@ -427,10 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setInterval(draw, 33);
 
-        window.addEventListener('resize', () => {
+        window.addEventListener('resize', debounce(() => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-        });
+        }, 250));
     };
 
     createMatrixRain();
@@ -445,12 +426,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Pixelated Globe
+    // Pixelated Globe - optimized context
     const createPixelGlobe = () => {
         const canvas = document.getElementById('globe-canvas');
         if (!canvas) return;
 
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         const centerX = 100;
         const centerY = 100;
         const radius = 80;

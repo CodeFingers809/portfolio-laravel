@@ -10,4 +10,26 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
+    build: {
+        // Optimize chunk splitting for better caching
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['axios'],
+                },
+            },
+        },
+        // Enable minification
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_console: true,
+                drop_debugger: true,
+            },
+        },
+        // Optimize CSS
+        cssMinify: true,
+        // Set chunk size warning limit
+        chunkSizeWarningLimit: 1000,
+    },
 });

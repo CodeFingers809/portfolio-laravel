@@ -1,0 +1,61 @@
+/* Code Block Styling */
+pre {
+    @apply bg-black/50 border border-zinc-700/25 rounded p-4 overflow-x-auto;
+}
+
+code {
+    @apply font-mono text-zinc-400;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #000000;
+    border-left: 1px solid rgba(82, 82, 91, 0.12);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(82, 82, 91, 0.3);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 113, 122, 0.4);
+}
+
+/* Selection */
+::selection {
+    background: rgba(82, 82, 91, 0.3);
+    color: #a1a1aa;
+}
+
+body {
+    font-family: 'VT323', monospace;
+    font-size: 20px;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    background-color: var(--theme-bg-primary);
+    color: var(--theme-text-primary);
+}
+
+.font-pixel {
+    font-family: 'Press Start 2P', monospace;
+    line-height: 1.6;
+}
+
+.text-pixel {
+    font-family: 'VT323', monospace;
+}
+
+/* SVG Icons Pixelation */
+svg {
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    shape-rendering: crispEdges;
+}

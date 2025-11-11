@@ -1,0 +1,70 @@
+/* Intro Loader Animations */
+#intro-loader {
+    transition: opacity 0.5s ease-out;
+}
+
+#intro-loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Blocky Loader */
+.blocky-loader {
+    display: flex;
+    gap: 12px;
+    height: 60px;
+    align-items: flex-end;
+}
+
+.blocky-loader .block {
+    width: 20px;
+    background: linear-gradient(180deg, rgba(113, 113, 122, 0.9), rgba(82, 82, 91, 0.6));
+    animation: block-bounce 1.2s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(82, 82, 91, 0.3);
+}
+
+.blocky-loader .block:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.blocky-loader .block:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.blocky-loader .block:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.blocky-loader .block:nth-child(4) {
+    animation-delay: 0.45s;
+}
+
+.blocky-loader .block:nth-child(5) {
+    animation-delay: 0.6s;
+}
+
+/* Percentage Display */
+.percentage-display {
+    text-shadow: 0 0 20px rgba(82, 82, 91, 0.5);
+    animation: pulse-glow 2s ease-in-out infinite;
+    font-family: 'Press Start 2P', monospace;
+}
+
+/* Boot Messages */
+.boot-messages {
+    height: 200px;
+}
+
+.boot-line {
+    opacity: 0;
+    animation: boot-fade-in 0.3s ease-out forwards;
+    margin-bottom: 8px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    font-family: 'VT323', monospace;
+}
+
+.boot-line.success-line {
+    color: rgba(113, 113, 122, 0.9);
+    text-shadow: 0 0 10px rgba(82, 82, 91, 0.4);
+}
