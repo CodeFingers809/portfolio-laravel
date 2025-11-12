@@ -1,12 +1,8 @@
 /* =================================================================
    UNIVERSAL 4-CORNER BRACKET HOVER - Applied everywhere
-   ALL 4 CORNERS light up on hover with scale animation from center
-   Uses overlay approach so rounded corners don't cut it off
+   Handled in terminal-effects.css with SVG rounded corners
    ================================================================= */
 
-.terminal-border,
-.award-card,
-.skill-card,
 #certifications a,
 #about a,
 #hero a,
@@ -17,67 +13,72 @@
     overflow: visible !important;
 }
 
-/* Overlay wrapper for 4 corners - scales from center */
-.terminal-border::after,
-.award-card::after,
-.skill-card::after,
+/* Certifications, About, Hero link corners */
+#certifications a::before,
+#about a::before,
+#hero a::before,
+#projects a.github-btn::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 10;
+    background:
+        /* Top-left corner - L shape */
+        linear-gradient(90deg, var(--theme-text-primary), var(--theme-text-primary)) 0 0 / 14px 2px,
+        linear-gradient(0deg, var(--theme-text-primary), var(--theme-text-primary)) 0 0 / 2px 14px,
+        /* Bottom-right corner - L shape */
+        linear-gradient(90deg, var(--theme-text-primary), var(--theme-text-primary)) 100% 100% / 14px 2px,
+        linear-gradient(0deg, var(--theme-text-primary), var(--theme-text-primary)) 100% 100% / 2px 14px;
+    background-repeat: no-repeat;
+    transform: scale(0);
+    transform-origin: center;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 3px;
+}
+
 #certifications a::after,
 #about a::after,
 #hero a::after,
-#experience .terminal-border::after,
-#projects .terminal-border::after,
 #projects a.github-btn::after {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: -4px;
     pointer-events: none;
     opacity: 0;
-    transform: scale(0.8);
-    background-image:
-        /* Top-left corner */
-        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
-        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
-        /* Top-right corner */
-        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
-        linear-gradient(to bottom, var(--theme-text-primary), var(--theme-text-primary)),
-        /* Bottom-left corner */
-        linear-gradient(to right, var(--theme-text-primary), var(--theme-text-primary)),
-        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary)),
-        /* Bottom-right corner */
-        linear-gradient(to left, var(--theme-text-primary), var(--theme-text-primary)),
-        linear-gradient(to top, var(--theme-text-primary), var(--theme-text-primary));
-    background-size:
-        12px 2px,
-        2px 12px,
-        12px 2px,
-        2px 12px,
-        12px 2px,
-        2px 12px,
-        12px 2px,
-        2px 12px;
-    background-position:
-        top left,
-        top left,
-        top right,
-        top right,
-        bottom left,
-        bottom left,
-        bottom right,
-        bottom right;
+    z-index: 10;
+    background:
+        /* Top-right corner - L shape */
+        linear-gradient(90deg, var(--theme-text-primary), var(--theme-text-primary)) 100% 0 / 14px 2px,
+        linear-gradient(0deg, var(--theme-text-primary), var(--theme-text-primary)) 100% 0 / 2px 14px,
+        /* Bottom-left corner - L shape */
+        linear-gradient(90deg, var(--theme-text-primary), var(--theme-text-primary)) 0 100% / 14px 2px,
+        linear-gradient(0deg, var(--theme-text-primary), var(--theme-text-primary)) 0 100% / 2px 14px;
     background-repeat: no-repeat;
+    transform: scale(0);
+    transform-origin: center;
+    transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-radius: 3px;
 }
 
-/* Activate on hover - scale to full size */
-.terminal-border:hover::after,
-.award-card:hover::after,
-.skill-card:hover::after,
+#certifications a:hover::before,
+#about a:hover::before,
+#hero a:hover::before,
+#projects a.github-btn:hover::before,
 #certifications a:hover::after,
 #about a:hover::after,
 #hero a:hover::after,
-#experience .group:hover .terminal-border::after,
-#projects .terminal-border:hover::after,
-#projects .group:hover .terminal-border::after,
 #projects a.github-btn:hover::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Group hover support for Experience and Projects */
+#experience .group:hover .terminal-border::before,
+#experience .group:hover .terminal-border::after,
+#projects .group:hover .terminal-border::before,
+#projects .group:hover .terminal-border::after {
     opacity: 1;
     transform: scale(1);
 }
@@ -250,4 +251,57 @@ nav a:hover::after {
     background: transparent !important;
     border-color: inherit !important;
     transform: none !important;
+}
+
+/* =================================================================
+   BLOG CARD CURSOR-BASED LIGHT EFFECT
+   Uses background with mask instead of pseudo-elements (which are used by terminal-border)
+   ================================================================= */
+
+.blog-card {
+    position: relative;
+    overflow: visible !important;
+}
+
+/* Keep image container with overflow hidden for rounded corners */
+.blog-card > div:first-child {
+    overflow: hidden;
+    border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* Create cursor light effect with background-image on the card itself */
+.blog-card:hover {
+    background-image: radial-gradient(
+        400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.08) 0%,
+        rgba(255, 255, 255, 0.04) 30%,
+        transparent 60%
+    );
+    background-blend-mode: overlay;
+}
+
+/* Ensure blog card content is above the light effect */
+.blog-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* Read more underline effect */
+.read-more-link {
+    position: relative;
+}
+
+.read-more-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 1px;
+    background: var(--theme-text-primary);
+    transition: width 0.3s ease;
+}
+
+.blog-card:hover .read-more-link::after {
+    width: 100%;
 }

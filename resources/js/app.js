@@ -386,8 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function draw() {
             // Get theme colors from CSS variables
-            const bgColor = getComputedStyle(document.body).getPropertyValue('--theme-bg-primary');
-            const textColor = getComputedStyle(document.body).getPropertyValue('--theme-text-primary');
+            const bgColor = getComputedStyle(document.body).getPropertyValue('--theme-bg-primary').trim();
+            const textColor = getComputedStyle(document.body).getPropertyValue('--theme-text-accent').trim();
 
             ctx.fillStyle = bgColor + '0D'; // 5% opacity
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -625,3 +625,28 @@ window.copyToClipboard = function(text, element) {
         console.error('Failed to copy:', err);
     });
 };
+
+// Blog card clickable and cursor light effect
+document.addEventListener('DOMContentLoaded', () => {
+    const blogCards = document.querySelectorAll('.blog-card');
+
+    blogCards.forEach(card => {
+        // Make entire card clickable
+        card.addEventListener('click', () => {
+            const href = card.getAttribute('data-href');
+            if (href) {
+                window.location.href = href;
+            }
+        });
+
+        // Cursor-based light effect
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            card.style.setProperty('--mouse-x', `${x}px`);
+            card.style.setProperty('--mouse-y', `${y}px`);
+        });
+    });
+});

@@ -43,12 +43,12 @@
             <!-- Blog Grid -->
             <div class="grid md:grid-cols-2 gap-8">
                 @foreach($blogs as $blog)
-                    <article class="fade-in-section terminal-border terminal-glow bg-black/30 rounded-lg overflow-hidden hover:bg-black/50 transition-all group">
+                    <article class="fade-in-section terminal-border terminal-glow bg-black/30 rounded-lg transition-all group blog-card cursor-pointer" data-href="{{ route('blog.show', $blog['slug']) }}">
                         @if($blog['featured_image'])
                             <div class="relative h-48 overflow-hidden">
                                 <img src="{{ route('blog.asset', ['slug' => $blog['slug'], 'type' => 'images', 'filename' => basename($blog['featured_image'])]) }}"
                                      alt="{{ $blog['title'] }}"
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                     class="w-full h-full object-cover pointer-events-none">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent"></div>
                             </div>
                         @endif
@@ -70,10 +70,8 @@
                             </div>
 
                             <!-- Title -->
-                            <h2 class="text-2xl font-bold text-white mb-3 group-hover:text-zinc-300 transition-colors">
-                                <a href="{{ route('blog.show', $blog['slug']) }}">
-                                    {{ $blog['title'] }}
-                                </a>
+                            <h2 class="text-2xl font-bold text-white mb-3 transition-colors">
+                                {{ $blog['title'] }}
                             </h2>
 
                             <!-- Excerpt -->
@@ -84,10 +82,9 @@
                             @endif
 
                             <!-- Read More Link -->
-                            <a href="{{ route('blog.show', $blog['slug']) }}"
-                               class="inline-flex items-center text-zinc-300 hover:text-zinc-100 transition-all group-hover:translate-x-1">
+                            <span class="inline-flex items-center text-zinc-300 transition-all read-more-link">
                                 <span>Read More ></span>
-                            </a>
+                            </span>
                         </div>
                     </article>
                 @endforeach

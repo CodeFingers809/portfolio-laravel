@@ -27,10 +27,10 @@ code {
     background: rgba(113, 113, 122, 0.4);
 }
 
-/* Selection */
+/* Selection - Theme Specific */
 ::selection {
-    background: rgba(82, 82, 91, 0.3);
-    color: #a1a1aa;
+    background: var(--theme-text-accent);
+    color: var(--theme-bg-primary);
 }
 
 body {
